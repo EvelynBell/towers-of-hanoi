@@ -69,6 +69,3 @@ HanoiGame.prototype.readBoard = function () {
 
 var hanoiGameInstance = new HanoiGame(3, 5);
 hanoiGameInstance.initialize();
-
-var hanoiGameInstance = new HanoiGame(3, 5);
-hanoiGameInstance.initialize();
