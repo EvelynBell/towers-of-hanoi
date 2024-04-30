@@ -1,7 +1,7 @@
 var HanoiGame = function (pegs, discs) {
     this.pegs = pegs;
     this.discs = discs;
-    this.board = new Array(this.pegs);
+    this.board;
 };
 
 HanoiGame.prototype.initialize = function () {
@@ -9,9 +9,9 @@ HanoiGame.prototype.initialize = function () {
 
     for(var i = 0; i < this.pegs; i++) {
         if(i === 0) {
-            this.board[0] = new Array(this.discs);
+            this.board[i] = new Array(this.discs);
             for(var j = 0; j < this.discs; j++) {
-                this.board[0][j] = this.discs - j;
+                this.board[i][j] = this.discs - j;
             }
         } else {
             this.board[i] = [];
@@ -58,7 +58,8 @@ HanoiGame.prototype.moveDisc = function (targetPeg, destinationPeg) {
 };
 
 HanoiGame.prototype.readBoard = function () {
-    this.board.forEach(function (peg, index) {
+    mappedBoard = this.board.map((peg) => peg);
+    mappedBoard.forEach(function (peg, index) {
         console.log(`Peg ${index + 1} --- ${peg.join(' ')}`);
     });
 }
