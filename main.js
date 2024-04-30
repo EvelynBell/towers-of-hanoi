@@ -1,32 +1,39 @@
 var HanoiGame = function (pegs, discs) {
     this.pegs = pegs;
     this.discs = discs;
-    this.board = [];
-    this.fullPeg = [];
+    this.board = new Array(this.pegs);
 };
 
 HanoiGame.prototype.initialize = function () {
-    this.board = [];
-    this.fullPeg = [];
-    for(var i = this.discs; i > 0; i--) {
-        this.fullPeg.push(i);
-    }
-    for(var j = 0; j < this.pegs; j++) {
-        if(j === 0) {
-            this.board.push(this.fullPeg);
+    this.board = new Array(this.pegs);
+
+    for(var i = 0; i < this.pegs; i++) {
+        if(i === 0) {
+            this.board[0] = new Array(this.discs);
+            for(var j = 0; j < this.discs; j++) {
+                this.board[0][j] = this.discs - j;
+            }
         } else {
-            this.board.push([]);
+            this.board[i] = [];
         }
     }
+
+    console.log('The starting board is: ');
+    this.readBoard();
 };
 
-HanoiGame.prototype.checkWinner = function () {
+HanoiGame.prototype.checkWinner = function (discs) {
+    var isWinner = false;
+
     this.board.forEach(function (peg, index) {
-        if(index != 0 && peg === this.fullPeg) {
-            console.log('You have won the round!');
-            hanoiGameInstance.initialize();
+        if(index != 0 && peg.length === discs) {
+            if(peg.every( (disc, index) => disc === discs - index)) {
+                console.log('You have won the round!');
+                isWinner = true;
+            }
         }
     });
+    return isWinner;
 };
 
 HanoiGame.prototype.moveDisc = function (targetPeg, destinationPeg) {
@@ -36,20 +43,25 @@ HanoiGame.prototype.moveDisc = function (targetPeg, destinationPeg) {
     if (targetPeg[targetPeg.length - 1] > destinationPeg[destinationPeg.length - 1]) {
         console.log('You cannot move a larger disc on to a smaller disc! The board is still: ');
         this.readBoard();
+    } else if (targetPeg === undefined || targetPeg.length === 0) {
+        console.log('There is no disc to move on that peg! The board is still: ');
+        this.readBoard();
     } else {
         console.log('Your move was successful! The board is now: ');
         destinationPeg.push(targetPeg.pop());
-        this.readBoard();
-        this.checkWinner();
+        if (this.checkWinner(this.discs)) {
+            this.initialize();
+        } else {
+            this.readBoard();
+        }
     }
 };
 
 HanoiGame.prototype.readBoard = function () {
-    this.board.forEach(function (peg) {
-        console.log(`--- ${peg.join(' ')}`);
+    this.board.forEach(function (peg, index) {
+        console.log(`Peg ${index + 1} --- ${peg.join(' ')}`);
     });
 }
 
 var hanoiGameInstance = new HanoiGame(3, 5);
 hanoiGameInstance.initialize();
-console.log(hanoiGameInstance.board);
