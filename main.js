@@ -40,11 +40,14 @@ HanoiGame.prototype.moveDisc = function (targetPeg, destinationPeg) {
     targetPeg = this.board[targetPeg - 1];
     destinationPeg = this.board[destinationPeg - 1];
 
-    if (targetPeg[targetPeg.length - 1] > destinationPeg[destinationPeg.length - 1]) {
-        console.log('You cannot move a larger disc on to a smaller disc! The board is still: ');
-        this.readBoard();
-    } else if (targetPeg === undefined || targetPeg.length === 0) {
+    if (!targetPeg) {
         console.log('There is no disc to move on that peg! The board is still: ');
+        this.readBoard();
+    } else if (!destinationPeg) {
+        console.log('There is no peg to move that disc onto! The board is still: ');
+        this.readBoard();
+    } else if (targetPeg[targetPeg.length - 1] > destinationPeg[destinationPeg.length - 1]) {
+        console.log('You cannot move a larger disc on to a smaller disc! The board is still: ');
         this.readBoard();
     } else {
         console.log('Your move was successful! The board is now: ');
@@ -63,6 +66,9 @@ HanoiGame.prototype.readBoard = function () {
         console.log(`Peg ${index + 1} --- ${peg.join(' ')}`);
     });
 }
+
+var hanoiGameInstance = new HanoiGame(3, 5);
+hanoiGameInstance.initialize();
 
 var hanoiGameInstance = new HanoiGame(3, 5);
 hanoiGameInstance.initialize();
